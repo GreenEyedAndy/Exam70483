@@ -26,7 +26,14 @@ namespace ExampleRunner
             if (type != null)
             {
                 var example = Activator.CreateInstance(type) as Example;
-                example?.Run();
+                if (example != null)
+                {
+                    example.Run();
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Example {name} not found!");
             }
         }
     }

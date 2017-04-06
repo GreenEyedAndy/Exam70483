@@ -10,8 +10,13 @@ namespace ExampleRunner
     {
         static void Main(string[] args)
         {
-            ExampleCaller.RunExample("1_76");
-
+            Console.WriteLine("Enter example number [x_yz]: ");
+            var readLine = Console.ReadLine();
+            var exampleToSearch = readLine.TrimEnd();
+            if (readLine != null)
+            {
+                ExampleCaller.RunExample(exampleToSearch);
+            }
 
             Console.WriteLine("\nPress Enter to exit...");
             Console.ReadLine();
