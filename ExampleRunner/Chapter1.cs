@@ -154,4 +154,168 @@ namespace ExampleRunner
             calc(3, 4);
         }
     }
+
+    /// <summary>
+    /// Using an Action to expose an event
+    /// </summary>
+    public class Example1_82 : Example
+    {
+        public class Pub
+        {
+            public Action OnChange { get; set; }
+
+            public void Raise()
+            {
+                if (OnChange != null)
+                {
+                    OnChange();
+                }
+            }
+        }
+
+        public override void Run()
+        {
+            Pub p = new Pub();
+            p.OnChange += () => Console.WriteLine("Event raised to method 1");
+            p.OnChange += () => Console.WriteLine("Event raised to method 2");
+            p.Raise();
+        }
+    }
+
+    /// <summary>
+    /// Using the event keyword
+    /// </summary>
+    public class Example1_83 : Example
+    {
+        public class Pub
+        {
+            public event Action OnChange = delegate {};
+
+            public void Raise()
+            {
+                OnChange?.Invoke();
+            }
+        }
+
+        public override void Run()
+        {
+            Pub p = new Pub();
+            p.OnChange += () => Console.WriteLine("Event raised to method 1");
+            p.OnChange += () => Console.WriteLine("Event raised to method 2");
+            p.Raise();
+        }
+    }
+
+    /// <summary>
+    /// Custum event arguments
+    /// </summary>
+    public class Example1_84 : Example
+    {
+        public class MyArgs : EventArgs
+        {
+            public MyArgs(int value)
+            {
+                Value = value;
+            }
+
+            public int Value { get; set; }
+        }
+
+        public class Pub
+        {
+            public event EventHandler<MyArgs> OnChange = delegate { };
+
+            public void Raise()
+            {
+                OnChange(this, new MyArgs(42));
+            }
+        }
+
+        public override void Run()
+        {
+            Pub p = new Pub();
+
+            p.OnChange += (sender, args) => Console.WriteLine($"Event raised: {args.Value}");
+
+            p.Raise();
+        }
+    }
+
+    /// <summary>
+    /// Exception when raising an event
+    /// </summary>
+    public class Example1_86 : Example
+    {
+        public class Pub
+        {
+            public event EventHandler OnChange = delegate { };
+
+            public void Raise()
+            {
+                OnChange(this, EventArgs.Empty);
+            }
+        }
+
+        public override void Run()
+        {
+            Pub p = new Pub();
+
+            p.OnChange += (sender, args) => Console.WriteLine("Subscriber 1 called");
+            p.OnChange += (sender, args) => throw new Exception();
+            p.OnChange += (sender, args) => Console.WriteLine("Subscriber 3 called");
+
+            p.Raise();
+        }
+    }
+
+    /// <summary>
+    /// Manually raising events with exception handling
+    /// </summary>
+    public class Example1_87 : Example
+    {
+        public class Pub
+        {
+            public event EventHandler OnChange = delegate { };
+
+            public void Raise()
+            {
+                var exceptions = new List<Exception>();
+
+                foreach (Delegate handler in OnChange.GetInvocationList())
+                {
+                    try
+                    {
+                        handler.DynamicInvoke(this, EventArgs.Empty);
+                    }
+                    catch (Exception e)
+                    {
+                        exceptions.Add(e);
+                    }
+                }
+
+                if (exceptions.Any())
+                {
+                    throw new AggregateException(exceptions);
+                }
+            }
+        }
+
+        public override void Run()
+        {
+            Pub p = new Pub();
+
+            p.OnChange += (sender, args) => Console.WriteLine("Subscriber 1 called");
+            p.OnChange += (sender, args) => throw new Exception();
+            p.OnChange += (sender, args) => Console.WriteLine("Subscriber 3 called");
+
+            try
+            {
+                p.Raise();
+            }
+            catch (AggregateException e)
+            {
+                Console.WriteLine(e.InnerExceptions.Count);
+            }
+        }
+    }
 }
