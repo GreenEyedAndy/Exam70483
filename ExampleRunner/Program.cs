@@ -10,6 +10,11 @@ namespace ExampleRunner
     {
         static void Main(string[] args)
         {
+            ExampleCaller.RunExample("1_76");
+
+
+            Console.WriteLine("\nPress Enter to exit...");
+            Console.ReadLine();
         }
     }
 }
