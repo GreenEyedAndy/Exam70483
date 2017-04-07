@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.ExceptionServices;
 
 namespace ExampleRunner
 {
@@ -318,4 +315,51 @@ namespace ExampleRunner
             }
         }
     }
+
+    /// <summary>
+    /// Using Environment.FailFast
+    /// </summary>
+    public class Example1_92 : Example
+    {
+        public override void Run()
+        {
+            Console.WriteLine("Enter a number:");
+            string s = Console.ReadLine();
+
+            try
+            {
+                int i = int.Parse(s);
+                if (i == 42) Environment.FailFast("Special number entered");
+            }
+            finally
+            {
+                Console.WriteLine("Program complete.");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Using ExceptionDispatchInfo.Throw
+    /// </summary>
+    public class Example1_97 : Example
+    {
+        public override void Run()
+        {
+            ExceptionDispatchInfo possibleException = null;
+            try
+            {
+                string s = Console.ReadLine();
+                int.Parse(s);
+            }
+            catch (FormatException e)
+            {
+                possibleException = ExceptionDispatchInfo.Capture(e);
+            }
+
+            if (possibleException != null)
+            {
+                possibleException.Throw();
+            }
+        }
+}
 }

@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ConsoleDump, Version=0.6.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ConsoleDump.0.6.0.1\lib\net40-Client\ConsoleDump.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chapter1.cs" />
+    <Compile Include="Chapter2Obj2_2.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="ExampleCaller.cs" />
     <Compile Include="Program.cs" />
@@ -50,6 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Chapter2Obj2_1.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
