@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Chapter1.cs" />
     <Compile Include="Chapter2Obj2_2.cs" />
+    <Compile Include="Chapter2Obj3.cs" />
+    <Compile Include="Chapter2Obj4.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="ExampleCaller.cs" />
     <Compile Include="Program.cs" />
