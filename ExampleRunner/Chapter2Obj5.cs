@@ -39,6 +39,7 @@ namespace ExampleRunner
         public override void Run()
         {
             Attribute.IsDefined(typeof(Person), typeof(CompleteCustomAttribute)).Dump();
+
         }
     }
 }
